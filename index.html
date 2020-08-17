@@ -1,0 +1,91 @@
+<!Doctype>
+<html>
+	<head>
+
+	<script type="text/javascript" src="./shim.min.js"></script>
+	<script type="text/javascript" src="./xlsx.full.min.js"></script>
+
+	<script type="text/javascript" src="./Blob.js"></script>
+	<script type="text/javascript" src="./FileSaver.js"></script>
+		
+	</head>
+	<body style="margin: 30px 50px;">
+
+		<p style="font-size: 20px;">Hi, this is a utility function I (Dacod) wrote to fasciliate quick csv to xlsx conversions and avoid windows and mac complications around CSV conversions.
+		<br>
+		<br>
+	This page does not 🚫 execute any external scripts, does not 🚫 have any trackers, does not 🚫 save any data. It's simply meant to replace me 🤖 🤖 in cases where I have to fascilitate conversations around CSV to XLSX conversions.<br>
+	<br>
+	Upload CSV and delete first row on Excel.😀 😀 👍🏿 👍🏿
+</p>
+
+
+
+		  <body onload="init()">
+    <input id="fileInput" type="file" name="file" />
+    <pre id="fileContent"></pre>
+  </body>
+
+	</body>
+	<script>
+function doit(type, fn, dl) {
+	var elt = document.getElementById('data-table');
+	var wb = XLSX.utils.table_to_book(elt, {sheet:"Sheet JS"});
+	return dl ?
+		XLSX.write(wb, {bookType:type, bookSST:true, type: 'base64'}) :
+		XLSX.writeFile(wb, fn || ('SheetJSTableExport.' + (type || 'xlsx')));
+}
+
+function doit2(data){
+
+	
+var wb = XLSX.read(data, {type:"binary"});
+var js = XLSX.utils.sheet_to_json(wb.Sheets.Sheet1, {header:1, raw:true});
+
+
+      // export json to Worksheet of Excel
+      // only array possible
+
+      console.log(js);
+      var exportSh = XLSX.utils.json_to_sheet(js) 
+  
+
+      // A workbook is the name given to an Excel file
+      var wb = XLSX.utils.book_new() // make Workbook of Excel
+
+      // add Worksheet to Workbook
+      // Workbook contains one or more worksheets
+      XLSX.utils.book_append_sheet(wb, exportSh, 'export') // sheetAName is name of Worksheet
+
+
+      // export Excel file
+      XLSX.writeFile(wb, 'export.xlsx') // name of the file is 'book.xlsx'
+
+
+}
+
+
+function init(){
+  document.getElementById('fileInput').addEventListener('change', handleFileSelect, false);
+}
+
+function handleFileSelect(event){
+  const reader = new FileReader()
+  reader.onload = handleFileLoad;
+  reader.readAsText(event.target.files[0])
+}
+
+function handleFileLoad(event){
+
+	doit2(event.target.result);
+
+  
+}
+
+
+
+
+</script>
+</html>
+
+
